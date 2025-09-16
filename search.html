@@ -2,194 +2,136 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>CSS 搜索框示例</title>
+  <title>搜索框 Demo</title>
   <style>
-    :root{
-      --bg:#0f1724;           /* 整体背景色 */
-      --card:#0b1220;         /* 搜索区域背景 */
-      --accent:#8b5cf6;       /* 主色 / 聚焦时颜色 */
-      --muted:#9ca3af;        /* 次要文字颜色 */
-      --input-bg:#071023;     /* 输入框背景 */
-      --glass: rgba(255,255,255,0.03);
-      --radius: 12px;
-      --transition: 180ms ease;
-      --width: min(680px, 90%);
+    body {
+      font-family: sans-serif;
+      background: #0f172a;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 100px;
     }
-
-    /* 页面居中样式，仅示例使用 */
-    html,body{
-      height:100%;
-      margin:0;
-      font-family: Inter, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background: linear-gradient(180deg,var(--bg), #071028 80%);
-      color: #e6eef8;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+    .search-container {
+      position: relative;
+      width: 320px;
     }
-
-    .search-wrap{
-      width:var(--width);
-      background: linear-gradient(180deg,var(--card), rgba(11,18,32,0.9));
-      padding:18px;
-      border-radius:var(--radius);
-      box-shadow: 0 8px 30px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
-      display:flex;
-      gap:12px;
-      align-items:center;
-      backdrop-filter: blur(6px);
-    }
-
-    /* 图标按钮 */
-    .btn-icon{
-      background:transparent;
-      border:0;
-      padding:8px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      border-radius:10px;
-      cursor:pointer;
-      color:var(--muted);
-      transition: color var(--transition), transform var(--transition);
-    }
-    .btn-icon:focus{ outline:2px solid rgba(139,92,246,0.18); outline-offset:2px; }
-    .btn-icon:hover{ color:var(--accent); transform:translateY(-2px); }
-
-    /* 搜索输入容器：有内置放大镜图标（在左）和清除按钮（在右） */
-    .search-field{
-      flex:1;
-      position:relative;
-      display:flex;
-      align-items:center;
-    }
-
-    .search-field input[type="search"]{
-      width:100%;
-      padding:12px 44px;
-      padding-left:44px; /* 给左侧图标留位 */
-      background: linear-gradient(180deg,var(--input-bg), rgba(10,18,32,0.6));
-      border: 1px solid rgba(255,255,255,0.03);
-      color: #e6eef8;
-      border-radius:10px;
-      font-size:16px;
-      transition: box-shadow var(--transition), border-color var(--transition), transform var(--transition);
-      -webkit-appearance:none;
-      appearance:none;
-    }
-    .search-field input::placeholder{ color:var(--muted); opacity:0.9; }
-
-    /* 左侧放大镜（绝对定位） */
-    .search-field .icon-left{
-      position:absolute;
-      left:10px;
-      pointer-events:none;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      color:var(--muted);
-    }
-
-    /* 右侧清除按钮 */
-    .search-field .clear-btn{
-      position:absolute;
-      right:8px;
-      background:transparent;
-      border:0;
-      padding:6px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      border-radius:8px;
-      cursor:pointer;
-      color:var(--muted);
-      transition: color var(--transition);
-    }
-    .search-field .clear-btn:hover{ color: #fff; }
-
-    /* 聚焦效果 */
-    .search-field input:focus{
+    input[type="search"] {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
       outline: none;
-      border-color: rgba(139,92,246,0.9);
-      box-shadow: 0 6px 20px rgba(139,92,246,0.12);
     }
-
-    /* 可选：搜索按钮（提交） */
-    .search-submit{
-      background:linear-gradient(90deg,var(--accent), #06b6d4);
-      border:0;
-      color:white;
-      padding:10px 14px;
-      border-radius:10px;
-      font-weight:600;
-      cursor:pointer;
-      display:inline-flex;
-      gap:8px;
-      align-items:center;
-      transition: transform var(--transition), box-shadow var(--transition);
+    ul.suggestions {
+      list-style: none;
+      margin: 4px 0 0;
+      padding: 0;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #1e293b;
+      border-radius: 8px;
+      overflow: hidden;
+      max-height: 180px;
+      overflow-y: auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      display: none;
     }
-    .search-submit:active{ transform:translateY(1px); }
-    .search-submit:focus{ outline:2px solid rgba(0,0,0,0.12); outline-offset:2px; }
-
-    /* 响应式：窄屏时堆叠按钮到下方 */
-    @media (max-width:520px){
-      .search-wrap{ flex-direction:column; align-items:stretch; gap:10px; padding:14px; }
-      .search-submit{ width:100%; justify-content:center; }
+    ul.suggestions li {
+      padding: 8px 12px;
+      cursor: pointer;
     }
-
-    /* 小的无障碍提示文字 */
-    .sr-only{
-      position:absolute;
-      left:-10000px;
-      top:auto;
-      width:1px;
-      height:1px;
-      overflow:hidden;
+    ul.suggestions li:hover,
+    ul.suggestions li.active {
+      background: #3b82f6;
     }
   </style>
 </head>
 <body>
-  <!-- 使用 form 便于提交与无障碍支持 -->
-  <form class="search-wrap" role="search" aria-label="站内搜索" onsubmit="event.preventDefault(); alert('模拟搜索: ' + document.getElementById('q').value)">
-    <!-- 可放置左侧可选图标（例如网站图标） -->
-    <button class="btn-icon" type="button" aria-hidden="true" title="网站">
-      <!-- 简单 logo（SVG） -->
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <rect x="2" y="2" width="20" height="20" rx="5" fill="rgba(255,255,255,0.04)"></rect>
-        <path d="M7 12h10" stroke="currentColor" stroke-linecap="round" stroke-width="1.6" opacity="0.9"/>
-      </svg>
-    </button>
+  <div class="search-container">
+    <input id="q" type="search" placeholder="输入关键词…" autocomplete="off" />
+    <ul id="suggestions" class="suggestions"></ul>
+  </div>
 
-    <div class="search-field">
-      <label class="sr-only" for="q">搜索（按回车提交）</label>
+  <script>
+    const input = document.getElementById("q");
+    const suggestionsBox = document.getElementById("suggestions");
 
-      <div class="icon-left" aria-hidden="true">
-        <!-- 放大镜 SVG -->
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-        </svg>
-      </div>
+    // 示例候选数据（可换成 API 返回）
+    const data = ["apple", "banana", "blueberry", "cherry", "dragonfruit", "grape", "mango", "orange"];
 
-      <input id="q" type="search" name="q" placeholder="搜索你想找的内容（按 Enter 提交）" autocomplete="off" />
+    let currentIndex = -1; // 当前键盘选择项
 
-      <button class="clear-btn" type="button" aria-label="清除查询" onclick="document.getElementById('q').value=''; document.getElementById('q').focus();">
-        <!-- 小叉号 -->
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-          <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-    </div>
+    input.addEventListener("input", () => {
+      const value = input.value.toLowerCase();
+      const matches = data.filter(item => item.includes(value));
+      renderSuggestions(matches);
+    });
 
-    <button class="search-submit" type="submit" title="搜索">
-      <!-- 提交文字与图标 -->
-      <span>搜索</span>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M21 21l-4.35-4.35" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
-        <circle cx="11" cy="11" r="6" stroke="white" stroke-width="1.6"/>
-      </svg>
-    </button>
-  </form>
+    input.addEventListener("keydown", e => {
+      const items = suggestionsBox.querySelectorAll("li");
+      if (!items.length) return;
+
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        currentIndex = (currentIndex + 1) % items.length;
+        updateActive(items);
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        currentIndex = (currentIndex - 1 + items.length) % items.length;
+        updateActive(items);
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        if (currentIndex >= 0) {
+          input.value = items[currentIndex].textContent;
+          clearSuggestions();
+        }
+      }
+    });
+
+    function renderSuggestions(matches) {
+      suggestionsBox.innerHTML = "";
+      currentIndex = -1;
+      if (!matches.length || !input.value) {
+        clearSuggestions();
+        return;
+      }
+      matches.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        li.addEventListener("click", () => {
+          input.value = item;
+          clearSuggestions();
+        });
+        suggestionsBox.appendChild(li);
+      });
+      suggestionsBox.style.display = "block";
+    }
+
+    function clearSuggestions() {
+      suggestionsBox.style.display = "none";
+      suggestionsBox.innerHTML = "";
+      currentIndex = -1;
+    }
+
+    function updateActive(items) {
+      items.forEach(i => i.classList.remove("active"));
+      if (currentIndex >= 0) {
+        items[currentIndex].classList.add("active");
+      }
+    }
+
+    // 按 `/` 聚焦搜索框
+    document.addEventListener("keydown", e => {
+      if (e.key === "/" && document.activeElement !== input) {
+        e.preventDefault();
+        input.focus();
+      }
+    });
+  </script>
 </body>
 </html>
