@@ -297,5 +297,43 @@ rtcwake 控制系统待机/唤醒（依赖硬件支持）
 ⚡ 这一类命令大多和 CPU / 内存 / 进程 / 内核 相关。在 Termux 里，有一些命令（比如 lsblk、uptime、vmstat）可能要额外安装 procps、util-linux 之类的软件包才有。
 ```
 
+``` Text 
+🔹 网络相关命令
+包含常见网络调试、连接、配置工具
+命令	说明
+ping	测试网络连通性（ICMP 请求）
+ping6	IPv6 版本的 ping
+ifconfig	显示或配置网络接口（旧工具，已被 ip 替代）
+ipmaddr	显示/修改多播地址
+iptunnel	配置 IP 隧道
+netstat	显示网络连接、路由、接口（旧工具，推荐用 ss）
+route	显示/修改路由表
+arp	显示/修改 ARP 缓存
+rarp	反向 ARP
+nsenter	进入指定进程的命名空间（网络、挂载、PID 等）
+telnet	远程登录/测试端口连接
+ftp	文件传输协议客户端
+tftp	简单文件传输协议客户端
+curl	HTTP/HTTPS 请求工具
+wcurl	Termux 提供的简化版 curl
+curl-config	显示 curl 配置选项
+wget	下载文件（Termux 可能要安装）
+logger	将消息写入系统日志（可用于远程 syslog）
+hostname	显示或设置主机名
+dnsdomainname	显示 DNS 域名
+whoami	显示当前用户名（常用于网络认证脚本）
+mcookie	生成随机认证 cookie（X 会话或 RPC 用）
+ssh	远程登录（Termux 需安装 openssh）
+scp	安全复制文件（基于 ssh）
+sftp	安全文件传输（基于 ssh）
+nc / netcat	网络调试工具，可建立 TCP/UDP 连接
+nc.openbsd	OpenBSD 版本的 netcat
+socat	高级 socket 工具（需安装）
 
-
+⚡ 这些命令常用于：
+•	网络诊断：ping, traceroute, netstat
+•	远程访问：ssh, telnet
+•	文件传输：ftp, sftp, scp, tftp, curl, wget
+•	路由/接口管理：ifconfig, route, arp, ip* 系列
+去除空行 呈现代码块
+```
