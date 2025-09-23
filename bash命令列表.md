@@ -1,5 +1,5 @@
 ``` Text 
-🔴常规分类说明
+🔴常规类
 
 🔹1. Shell 内建命令 (bash builtins)
 cd：切换目录
@@ -94,6 +94,7 @@ xargs：参数传递
 
 ``` Text 
 🟠 Shell 内建命令（bash 自带）
+
 命令 说明
 alias 定义命令别名
 unalias 取消别名
@@ -187,6 +188,7 @@ zgrep 在压缩文件中 grep
 
 ``` Text 
 🟡 压缩与解压
+
 命令 说明
 tar 打包/解包（支持 gzip、bzip2、xz、zstd 等）
 gzip 压缩文件（生成 .gz）
@@ -235,7 +237,7 @@ znew 把 .Z 文件转换为 .gz
 
 ```
 
-
+``` Text 
 🟢系统与进程
 主要用于查看、控制进程、系统状态和资源。
 
