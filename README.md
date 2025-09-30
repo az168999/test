@@ -17,13 +17,17 @@
 │   ├── api/              # 接口目录
 │   ├── utils/            # 工具函数
 │
-├── vite.config.ts        # Vite 配置文件
-├── package.json          # 项目依赖和脚本
-├── netlify.toml          # Netlify 部署配置
 ├── 终端/                  # 终端命令或脚本
 │   ├── scripts.sh        # 自定义脚本
 │
-├── .gitignore            # Git 忽略文件
+│
+├── 未分类/                  # 暂未分类
+│
+├── <!-- .gitignore            # Git 忽略文件 -->
+├── vite.config.ts        # Vite 配置文件
+├── package.json          # 项目依赖和脚本
+├── netlify.toml          # Netlify 部署配置
+
 ```
 
 ---
