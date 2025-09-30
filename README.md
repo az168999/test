@@ -10,7 +10,7 @@
 | `前端/index.css` | 全局样式 |
 | `前端/main.tsx` | 前端入口文件 |
 | `后端/server.ts` | 后端服务入口（示例） |
-| `后端/api/` | 接口目录 |
+| `后端` `api/` | 接口目录 |
 | `后端/utils/` | 工具函数 |
 | `vite.config.ts` | Vite 配置文件 |
 | `package.json` | 项目依赖和脚本 |
